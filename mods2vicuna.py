@@ -1,3 +1,6 @@
+#Converts METS/MODS from StaBi HH set to Wikitext for mass upload of free sets
+#Developed as part of the Coding da Vinci Workshop (Nov 21-22 2015 at DNB, Frankfurt)
+
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import XMLParser
 import os.path
@@ -81,7 +84,7 @@ def extractMods(filename):
 def wikitextFilename(variables,imageFilename):
 	#TODO
 	return ""
-	
+
 def generateWikitext(variableMap):
 	header=""
 	filledTemplate=""
