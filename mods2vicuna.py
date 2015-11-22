@@ -78,7 +78,10 @@ def extractMods(filename):
 	
 	return result
 	
-def wikitextFilename(imageFilename)
+def wikitextFilename(variables,imageFilename):
+	#TODO
+	return ""
+	
 def generateWikitext(variableMap):
 	header=""
 	filledTemplate=""
