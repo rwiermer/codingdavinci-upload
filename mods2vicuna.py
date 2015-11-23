@@ -3,21 +3,26 @@
 
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import XMLParser
+from collections import defaultdict
+from string import Template
 import os.path
 import glob
 import re
+
+mapTemplateName="map" 
+mapTemplateFields=['title','description','title','accession number','source','medium','dimensions','publisher','date','institution']
+
 def extractMods(filename):
 	ns = {'mods': 'http://www.loc.gov/mods/v3'}
 	parser=XMLParser(encoding="UTF-8")
 	root = ET.parse(filename,parser=parser)
 	mods=root.find(".//mods:mods",ns)
 
-	result={}
+	result=defaultdict(lambda: '')
 	title=None
 	physicalDimension=None
 	
 	#artist
-	#TODO vorname nachname
 	result_artists=[]
 	names=mods.findall('.//mods:name',ns)
 	for a in names:
@@ -32,7 +37,7 @@ def extractMods(filename):
 				name=name+" "+familyNameNode.text	
 			result_artists.append(name)
 	if result_artists:
-		result['artist']=result_artists
+		result['author']=", ".join(result_artists)
 	
 	#title	
 	titleNode=mods.find('mods:titleInfo/mods:title',ns)	
@@ -42,7 +47,7 @@ def extractMods(filename):
 	#source
 	sourceNode=mods.find('mods:identifier[@type="purl"]',ns)	
 	if (sourceNode is not None):
-			result["source"]=sourceNode.text+" "+u'Staats- und Universit\u00e4tsbibliothek Hamburg'
+			result["source_url"]=sourceNode.text
 	#medium/dimensions
 	physicalDescriptionNodes=mods.findall('mods:physicalDescription/mods:extent',ns)
 	for extendNode in physicalDescriptionNodes:
@@ -54,8 +59,6 @@ def extractMods(filename):
 			else:
 				result["medium"]=extendNode.text
 	
-	#description
-	#TODO copy from title ?
 
 
 	#date/publisher/place
@@ -64,20 +67,18 @@ def extractMods(filename):
 		dateIssuedNode=originInfoNode.find('mods:dateIssued',ns)
 		if (dateIssuedNode is not None):
 			result["date"]=dateIssuedNode.text
-		placeOfPublicationNode=originInfoNode.find('mods:place/mods:placeterm',ns)
+		placeOfPublicationNode=originInfoNode.find('mods:place/mods:placeTerm',ns)
 		publisherNode=originInfoNode.find('mods:publisher',ns)
 
 		if (publisherNode is not None):
 			result["publisher"]=publisherNode.text
 			if (placeOfPublicationNode is not None):
-				result["publisher"]=result["publisher"]+", "+placeOfPublicationNode.text.translate(None, '[]')
-	#institution
-	result["institution"]=u'Staats- und Universit\u00e4tsbibliothek Hamburg'
+				result["publisher"]=(result["publisher"]+", "+placeOfPublicationNode.text).replace("[", "").replace("]","")
 
 	#accession number
 	urnIdentifierNode=mods.find('mods:identifier[@type="urn"]',ns)
 	if (urnIdentifierNode is not None):
-			result["accession number"]=urnIdentifierNode.text
+			result["accession_number"]=urnIdentifierNode.text
 	
 	return result
 	
@@ -85,19 +86,15 @@ def wikitextFilename(variables,imageFilename):
 	#TODO
 	return ""
 
-def generateWikitext(variableMap):
-	header=""
-	filledTemplate=""
-	footer=""
-	return(header+filledTemplate+footer)
+def generateWikitext(template, variableMap):
+	return Template(template).substitute(variableMap).encode("UTF-8")
 
 
 modss=glob.glob("C:\\Users\\Gebruiker\\Documents\\codingdavinci\\data\\karten\\karten\\*\\*.xml")	
-
+templatefile=open("stabihh-karten.template.wikitext")
+template=templatefile.read().decode("UTF-8")
 for mods in modss: 
 	result=extractMods(mods)
-	print result
-	print generateWikitext(mods)
-	#print os.path.dirname(mods)+"\\*.tif"
-	#tifs=glob.glob(os.path.dirname(mods)+"\\*.tif")
-	#print tifs	
+	print generateWikitext(template,result)
+	tifs=glob.glob(os.path.dirname(mods)+"\\*.tif")
+	print tifs

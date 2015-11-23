@@ -1,0 +1,47 @@
+=={{int:filedesc}}==
+{{Map
+ |title            = ${title}
+ |description      = {{de|Orignalbeschreibung: ${title}
+Diese Karte stammt aus der Sammlung Historische Hamburg- und Elb-Karten 1588 – 1939, für weitere Informationen siehe die allgemeine Kategorie.}}
+{{en|Historical description: ${title}}}
+
+ |legend           =
+ |author           = ${author}
+ |imgen            =
+ |date             = ${date}
+ |source           = ${source_url} Staats- und Universitätsbibliothek Hamburg
+ |permission       = 
+ |map date         =
+ |location         =
+ |projection       =
+ |scale            =
+ |heading          =
+ |latitude         =
+ |longitude        =
+ |warped           =
+ |set              =
+ |sheet            =
+ |type             =
+ |language         =
+ |publisher        = ${publisher}
+ |printer          =
+ |print date       =
+ |institution      = {{Institution:Staats- und Universitätsbibliothek Hamburg}}
+ |accession number = ${accession_number}
+ |dimensions       = ${dimensions}
+ |medium           = ${medium}
+ |inscriptions     =
+ |notes            =
+ |other versions   =
+}}
+
+=={{int:license-header}}==
+'''Auf Wunsch der Institution steht das Digitalisat unter CC BY 4.0.'''
+{{PD-scan|PD-old-70}}
+
+
+Die Metadaten enthalten in aller Regel Angaben zu Maßstab, format und ggf. Farbigkeit der Karten und Pläne. Kontrolliertes Vokabular: über den Kataloglink als Erschließungselemente erreichbar."
+
+[[Category:Maps in the Staats- und Universitätsbibliothek Hamburg]]
+[[Category:Old maps of Hamburg]]
+[[Category:Historische Hamburg- und Elb-Karten 1588–1939]]
